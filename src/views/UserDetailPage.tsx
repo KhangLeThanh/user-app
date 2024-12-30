@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { fetchUsers, fetchCartDetails, setHistory } from '../store/userSlice';
-import { RootState, AppDispatch } from '../store/store';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchUsers, fetchCartDetails, setHistory } from "../store/userSlice";
+import { RootState, AppDispatch } from "../store/store";
 
 export default function UserDetailPage() {
   const { userId } = useParams<{ userId: string }>();
@@ -16,7 +16,7 @@ export default function UserDetailPage() {
       const numericUserId = Number(userId);
 
       // Fetch users if they are not already loaded
-      if (Object.keys(users).length === 0) {
+      if (users.length === 0) {
         dispatch(fetchUsers());
       }
 
@@ -29,7 +29,7 @@ export default function UserDetailPage() {
       }
     }
   }, [userId, dispatch, users, history]);
-  const user = users?.[Number(userId)];
+  const user = users.find((user) => user.id === Number(userId));
   const cart = carts?.[Number(userId)];
 
   return (
@@ -40,10 +40,18 @@ export default function UserDetailPage() {
       {user ? (
         <div>
           <h3>User ID: {userId}</h3>
-          <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-          <p><strong>Date of birth:</strong> {user.birthDate}</p>
-          <p><strong>Card Number:</strong> {user.bank.cardNumber}</p>
-          <p><strong>Card Expiry:</strong> {user.bank.cardExpire}</p>
+          <p>
+            <strong>Name:</strong> {user.firstName} {user.lastName}
+          </p>
+          <p>
+            <strong>Date of birth:</strong> {user.birthDate}
+          </p>
+          <p>
+            <strong>Card Number:</strong> {user.bank.cardNumber}
+          </p>
+          <p>
+            <strong>Card Expiry:</strong> {user.bank.cardExpire}
+          </p>
         </div>
       ) : (
         <p>User details not available</p>
@@ -53,13 +61,19 @@ export default function UserDetailPage() {
       {cart ? (
         <div>
           <h4>Cart Details</h4>
-          <p><strong>Total:</strong> {cart.total}</p>
-          <p><strong>Total Products:</strong> {cart.totalProducts}</p>
-          <p><strong>Total Quantity:</strong> {cart.totalQuantity}</p>
+          <p>
+            <strong>Total:</strong> {cart.total}
+          </p>
+          <p>
+            <strong>Total Products:</strong> {cart.totalProducts}
+          </p>
+          <p>
+            <strong>Total Quantity:</strong> {cart.totalQuantity}
+          </p>
         </div>
       ) : (
         <p>Cart details not available</p>
       )}
     </div>
   );
-};
+}
